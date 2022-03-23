@@ -1,6 +1,10 @@
+import string
 import nltk
-
+from nltk.corpus import stopwords
+from nltk import word_tokenize
+from nltk.probability import FreqDist
 import ssl
+
 
 try:
     _create_unverified_https_context = ssl._create_unverified_context
@@ -10,38 +14,30 @@ else:
     ssl._create_default_https_context = _create_unverified_https_context
 
 nltk.download("stopwords")
+nltk.download('punkt')
 # --------#
 
-from nltk.corpus import stopwords
-from pymystem3 import Mystem
-from string import punctuation
 
-import pymorphy2
-
-morph = pymorphy2.MorphAnalyzer()
-# print(morph.parse('стали'))
-# Create lemmatizer and stopwords list
-mystem = Mystem()
-russian_stopwords = stopwords.words("russian")
+def remove_spec_chars(text, spec_chars=string.punctuation):
+    return "".join([ch for ch in text if ch not in spec_chars])
 
 
-# Preprocess function
-def preprocess_text(text):
-    tokens = mystem.lemmatize(text.lower())
-    tokens = [token for token in tokens if token not in russian_stopwords \
-              and token != " " \
-              and token.strip() not in punctuation]
+def remover_stop_words(text):
+    return [word for word in text if not word in stopwords.words("russian")]
 
-    # text = " ".join(tokens)
 
-    return tokens
+def sort_dict(input: dict):
+    return dict(sorted(input.items()))
 
-irden = "Ну что сказать, я вижу кто-то наступил на грабли, Ты разочаровал меня, ты был натравлен."
-post_proc_text = preprocess_text(
-    irden
-)
-# Examples
-# for word in irden.split(" "):
-#     print(morph.parse(word))
 
-print(post_proc_text)
+def process_text(text: str) -> dict:
+    text = remove_spec_chars(text.lower())
+    text_tokens = word_tokenize(text)
+    rw_text = remover_stop_words(text_tokens)
+    count_words = sort_dict(FreqDist(rw_text))
+    return count_words
+
+
+irden = "Ну что сказать сказать, я вижу кто-то наступил на грабли, Ты разочаровал меня, ты был натравлен. Натравлен на меня."
+print(process_text(irden))
+
