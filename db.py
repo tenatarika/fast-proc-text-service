@@ -15,13 +15,15 @@ async def create_text(text: models.Text) -> None:
 
 
 async def get_text_by_name(name: str) -> models.Text:
-    return models.Text(**texts_collection.find_one({"name": name}))
+    res = models.Text(**texts_collection.find_one({"name": name}))
+    # print(res.id)
+    return res
 
 
-async def update_text(text: models.Text) -> None:
-    texts_collection.update_one(text.dict())
-    return None
+# async def update_text(text: models.Text) -> None:
+#     texts_collection.update_one(text.dict())
+#     return None
 
 
-async def get_texts() -> models.TextsResponse:
-    return models.TextsResponse(texts_collection.find({}))
+async def get_texts() -> List[models.Text]:
+    return [models.Text(**item) for item in texts_collection.find({})]
