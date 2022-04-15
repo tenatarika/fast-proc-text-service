@@ -33,8 +33,8 @@ def sort_dict(input: dict):
 def process_text(text: str) -> dict:
     text = remove_spec_chars(text.lower())
     text_tokens = word_tokenize(text)
-    rw_text = remover_stop_words(text_tokens)
-    count_words = sort_dict(FreqDist(rw_text))
+    # rw_text = remover_stop_words(text_tokens)
+    count_words = sort_dict(FreqDist(text_tokens))
     return count_words
 
 # {
