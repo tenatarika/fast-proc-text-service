@@ -8,18 +8,3 @@ class Text(BaseModel):
 
 class TextFile(BaseModel):
     url: str
-
-
-# {
-#     {
-#         "filename": str
-#         "data": {
-#             "вижу": {
-#                 "кол-во": 1
-#             }
-#         }
-#     },
-#     {
-#
-#     }
-# }

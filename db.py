@@ -56,3 +56,7 @@ def delete_file(filename: str):
     print(data)
     with open("data_file.json", "w") as write_file:
         json.dump(data, write_file)
+
+
+def get_text_by_filename(filename: str):
+    return json.load(open("data_file.json")).get(filename)

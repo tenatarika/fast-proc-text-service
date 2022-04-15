@@ -37,19 +37,6 @@ def process_text(text: str) -> dict:
     count_words = sort_dict(FreqDist(text_tokens))
     return count_words
 
-# {
-#     {
-#         "filename": str
-#         "data": {
-#             "вижу": {
-#                 "кол-во": 1
-#             }
-#         }
-#     },
-#     {
-#
-#     }
-# }
-irden = "Ну что сказать сказать, я вижу кто-то наступил на грабли, Ты разочаровал меня, ты был натравлен. Натравлен на меня."
-print(process_text(irden))
+# irden = "Ну что сказать сказать, я вижу кто-то наступил на грабли, Ты разочаровал меня, ты был натравлен. Натравлен на меня."
+# print(process_text(irden))
 

@@ -1,5 +1,4 @@
 from typing import (
-    List,
     Optional,
 )
 
@@ -12,7 +11,6 @@ from fastapi import (
     UploadFile,
 )
 
-import models
 import db
 from proc_text import process_text
 
@@ -27,6 +25,11 @@ async def get_texts():
 @app.put("/text")
 async def update_text(filename: str, word: str, data: dict):
     return db.update_text(filename, word, data)
+
+
+@app.get("/get_by_file_name")
+async def get_text_by_filename(filename: str) -> dict:
+    return db.get_text_by_filename(filename)
 
 
 @app.post("/file/upload")
