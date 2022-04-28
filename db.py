@@ -4,6 +4,9 @@ import pymongo
 
 import models
 import json
+
+from proc_text import analyze_word
+
 __connection = pymongo.MongoClient("mongodb://localhost:27017")
 db = __connection.db
 texts_collection = db.texts
@@ -40,7 +43,18 @@ def write_db(data: dict, filename: str):
     print(cur_data)
     data_set = []
     for word, size in data.items():
-        data_set.append({word: {"count": size}})
+        proc_words = analyze_word(word)
+        for proc_word in proc_words:
+            data_set.append(
+                {
+                    word: {
+                        "count": size,
+                        "normal_form": f'{proc_word.normal_form}',
+                        "tag": f'{proc_word.tag}',
+                        "score": f'{proc_word.score}',
+                    }
+                }
+            )
     cur_data.update({filename: {"data": data_set}})
     with open("data_file.json", "w") as write_file:
         json.dump(cur_data, write_file)

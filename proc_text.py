@@ -42,8 +42,7 @@ def process_text(text: str) -> dict:
     count_words = sort_dict(FreqDist(text_tokens))
     return count_words
 
-irden = "Ну что сказать сказать, я вижу кто-то наступил на грабли, Ты разочаровал меня, ты был натравлен. Натравлен на меня."
-print(process_text(irden))
-proc_irden = process_text(irden)
 
-print(morph.parse('стали'))
+def analyze_word(word):
+    return morph.parse(word)
+
