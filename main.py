@@ -1,5 +1,5 @@
 from typing import (
-    Optional,
+    Optional, List,
 )
 
 from starlette import status
@@ -12,7 +12,7 @@ from fastapi import (
 )
 
 import db
-from proc_text import process_text
+from proc_text import process_text, get_list_category
 
 app = FastAPI()
 
@@ -45,6 +45,36 @@ async def upload_file(file: Optional[UploadFile] = File(...)):
 @app.delete('/file/delete', status_code=status.HTTP_204_NO_CONTENT)
 async def delete_file(filename: str) -> None:
     db.delete_file(filename)
+
+
+@app.get('/category')
+async def get_category():
+    return db.read_category()
+
+
+@app.post('/category', status_code=status.HTTP_201_CREATED)
+async def upload_catgory(file: Optional[UploadFile] = File(...)):
+    row_text = await file.read()
+    text = rtf_to_text(row_text.decode('utf-8'))
+    filename = file.filename
+    content = {"content": text}
+    db.write_category(filename, get_list_category(text))
+    return {"content": content}
+
+
+@app.put('/category')
+async def update_category(filename: str, data: List[dict]):
+    return db.write_category(filename, data)
+
+
+@app.delete('/category', status_code=status.HTTP_204_NO_CONTENT)
+async def delete_category(filename: str):
+    db.delete_category(filename)
+
+
+@app.get('/films')
+async def suggestion(text: str):
+    return db.get_saggestion_films(text)
 
 
 def run() -> None:
